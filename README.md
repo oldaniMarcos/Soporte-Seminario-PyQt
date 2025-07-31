@@ -1,0 +1,2 @@
+# Soporte-Seminario-PyQt
+WIP
