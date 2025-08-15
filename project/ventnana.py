@@ -5,6 +5,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QLineEdit, QGridLayout
 from PyQt6.QtWidgets import QTextEdit, QFileDialog, QHBoxLayout
 from PyQt6.QtGui import QPixmap
+from PyQt6.QtGui import QAction, QKeySequence
 import sys
 
 class VentanaPrincipal(QMainWindow):
@@ -17,6 +18,8 @@ class VentanaPrincipal(QMainWindow):
         self.setWindowTitle("Aplicación con Barra Lateral")
         self.setGeometry(100, 100, 800, 600)
         self.setCentralWidget(self.crear_pagina_inicial("Bienvenido a la Página Principal"))
+        self.create_action()
+        self.create_menu()
         self.show()
 
     def create_sidebar(self):
@@ -49,6 +52,25 @@ class VentanaPrincipal(QMainWindow):
         layout.addWidget(label)
         pagina.setLayout(layout)
         return pagina
+
+    def create_action(self):
+        self.barra = QAction("Barra", self, checkable=True)
+        self.barra.setChecked(True)
+        self.barra.setShortcut(QKeySequence("Ctrl+l"))
+        self.barra.setStatusTip("Muestra u oculta la barra lateral")
+        self.barra.triggered.connect(self.barra_lateral)
+        
+
+    def create_menu(self):
+        self.menuBar()
+        menu_vista = self.menuBar().addMenu("Opciones")
+        menu_vista.addAction(self.barra)
+
+    def barra_lateral(self):
+        if self.barra.isChecked():
+            self.dock_list.show()
+        else:
+            self.dock_list.hide()
 
     #El proyecto uno debe ser una calculadora simple
     def crear_proyecto_uno(self, texto):
@@ -164,5 +186,6 @@ class VentanaPrincipal(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
+    app.setStyle("WindowsVista") #Alternativas Fusion, Windows, WindowsVista, MacOS
     ventana = VentanaPrincipal()
     sys.exit(app.exec())
