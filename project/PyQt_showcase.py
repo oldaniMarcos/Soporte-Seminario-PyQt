@@ -1,5 +1,3 @@
-#Generar una app con una barra lateral que me permita navegar entre diferentes páginas. El proyecto usará pyqt6
-
 from PyQt6.QtWidgets import QApplication, QMainWindow, QStackedWidget, QPushButton, QVBoxLayout, QWidget, QLabel, QDockWidget,QListWidget
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QLineEdit, QGridLayout
@@ -15,7 +13,7 @@ class VentanaPrincipal(QMainWindow):
         self.create_sidebar()
         
     def initialize_ui(self):
-        self.setWindowTitle("Aplicación con Barra Lateral")
+        self.setWindowTitle("Página Principal")
         self.setGeometry(100, 100, 800, 600)
         self.setCentralWidget(self.crear_pagina_inicial("Bienvenido a la Página Principal"))
         self.create_action()
@@ -24,6 +22,7 @@ class VentanaPrincipal(QMainWindow):
 
     def create_sidebar(self):
         self.lista = QListWidget()
+        self.lista.addItem("Página Principal")
         self.lista.addItem("Proyecto 1")
         self.lista.addItem("Proyecto 2")
         self.lista.addItem("Proyecto 3")
@@ -40,15 +39,27 @@ class VentanaPrincipal(QMainWindow):
         pagina = item.text()
         if pagina == "Proyecto 1":
             self.setCentralWidget(self.crear_proyecto_uno("Esta es la Página 1"))
+            self.setWindowTitle('Calculadora')
         elif pagina == "Proyecto 2":
             self.setCentralWidget(self.crear_proyecto_dos("Esta es la Página 2"))
+            self.setWindowTitle('Bloc de Notas')
         elif pagina == "Proyecto 3":
             self.setCentralWidget(self.crear_proyecto_tres("Esta es la Página 3"))
+            self.setWindowTitle('Visor de Imagenes')
+        elif pagina == "Página Principal":
+            self.setCentralWidget(self.crear_pagina_inicial("Bienvenido a la Página Principal"))
+            self.setWindowTitle('Página Principal')
     
     def crear_pagina_inicial(self, texto):
         pagina = QWidget()
         layout = QVBoxLayout()
+
         label = QLabel(texto)
+        label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        fuente = label.font()
+        fuente.setPointSize(12)
+        label.setFont(fuente)
+
         layout.addWidget(label)
         pagina.setLayout(layout)
         return pagina
@@ -72,7 +83,7 @@ class VentanaPrincipal(QMainWindow):
         else:
             self.dock_list.hide()
 
-    #El proyecto uno debe ser una calculadora simple
+    #Proyecto uno: calculadora simple
     def crear_proyecto_uno(self, texto):
         pagina = QWidget()
         layout = QVBoxLayout()
@@ -80,8 +91,13 @@ class VentanaPrincipal(QMainWindow):
         # Campo de texto para mostrar el resultado
         self.resultado = QLineEdit()
         self.resultado.setReadOnly(True)
-        self.resultado.setAlignment(Qt.AlignmentFlag.AlignRight)
+        self.resultado.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.resultado.setFixedHeight(50)
+
+        fuente = self.resultado.font()
+        fuente.setPointSize(20)
+        self.resultado.setFont(fuente)
+        
         layout.addWidget(self.resultado)
 
         # Botones de la calculadora
@@ -95,7 +111,13 @@ class VentanaPrincipal(QMainWindow):
         grid_layout = QGridLayout()
         for texto_boton, posicion in botones.items():
             boton = QPushButton(texto_boton)
-            boton.setFixedSize(50, 50)
+
+            fuente = boton.font()
+            fuente.setPointSize(16)
+            fuente.setBold(True)
+            boton.setFont(fuente)
+
+            boton.setFixedSize(65, 65)
             boton.clicked.connect(self.manejar_click_boton)
             grid_layout.addWidget(boton, *posicion)
 
@@ -119,7 +141,7 @@ class VentanaPrincipal(QMainWindow):
         else:
             self.resultado.setText(self.resultado.text() + texto)
 
-    #El proyecto dos debe ser un bloc de notas simple
+    #Proyecto dos: bloc de notas simple
     def crear_proyecto_dos(self, texto):
         pagina = QWidget()
         layout = QVBoxLayout()
@@ -132,10 +154,18 @@ class VentanaPrincipal(QMainWindow):
         botones_layout = QHBoxLayout()
 
         boton_guardar = QPushButton("Guardar")
+        fuente = boton_guardar.font()
+        fuente.setPointSize(10)
+        boton_guardar.setFont(fuente)
+        boton_guardar.setFixedHeight(30)
         boton_guardar.clicked.connect(self.guardar_texto)
         botones_layout.addWidget(boton_guardar)
 
         boton_cargar = QPushButton("Cargar")
+        fuente = boton_cargar.font()
+        fuente.setPointSize(10)
+        boton_cargar.setFont(fuente)
+        boton_cargar.setFixedHeight(30)
         boton_cargar.clicked.connect(self.cargar_texto)
         botones_layout.addWidget(boton_cargar)
 
@@ -159,7 +189,7 @@ class VentanaPrincipal(QMainWindow):
             with open(archivo, 'r', encoding='utf-8') as file:
                 self.text_area.setPlainText(file.read())
 
-    #El proyecto tres debe ser un visor de imágenes simple
+    #Proyecto tres: visor de imágenes simple
     def crear_proyecto_tres(self, texto):
         pagina = QWidget()
         layout = QVBoxLayout()
@@ -167,10 +197,17 @@ class VentanaPrincipal(QMainWindow):
         # Etiqueta para mostrar la imagen
         self.imagen_label = QLabel("No se ha cargado ninguna imagen")
         self.imagen_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        fuente = self.imagen_label.font()
+        fuente.setPointSize(12)
+        self.imagen_label.setFont(fuente)
         layout.addWidget(self.imagen_label)
 
         # Botón para cargar la imagen
         boton_cargar_imagen = QPushButton("Cargar Imagen")
+        fuente = boton_cargar_imagen.font()
+        fuente.setPointSize(10)
+        boton_cargar_imagen.setFont(fuente)
+        boton_cargar_imagen.setFixedHeight(30)
         boton_cargar_imagen.clicked.connect(self.cargar_imagen)
         layout.addWidget(boton_cargar_imagen)
 
