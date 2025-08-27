@@ -4,6 +4,9 @@ from PyQt6.QtWidgets import QLineEdit, QGridLayout
 from PyQt6.QtWidgets import QTextEdit, QFileDialog, QHBoxLayout
 from PyQt6.QtGui import QPixmap
 from PyQt6.QtGui import QAction, QKeySequence
+
+from qt_material import apply_stylesheet 
+
 import sys
 
 class VentanaPrincipal(QMainWindow):
@@ -223,6 +226,9 @@ class VentanaPrincipal(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    app.setStyle("WindowsVista") #Alternativas Fusion, Windows, WindowsVista, MacOS
+    app.setStyle("Fusion") #Alternativas Fusion, Windows, WindowsVista, MacOS
     ventana = VentanaPrincipal()
+
+    apply_stylesheet(app, theme='light_cyan_500.xml', invert_secondary=True)
+
     sys.exit(app.exec())
