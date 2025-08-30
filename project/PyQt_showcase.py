@@ -18,7 +18,7 @@ class VentanaPrincipal(QMainWindow):
     def initialize_ui(self):
         self.setWindowTitle("Página Principal")
         self.setGeometry(100, 100, 800, 600)
-        self.setCentralWidget(self.crear_pagina_inicial("Bienvenido a la Página Principal"))
+        self.setCentralWidget(self.crear_pagina_inicial("Bienvenido a la página principal"))
         self.create_action()
         self.create_menu()
         self.show()
@@ -29,6 +29,10 @@ class VentanaPrincipal(QMainWindow):
         self.lista.addItem("Proyecto 1")
         self.lista.addItem("Proyecto 2")
         self.lista.addItem("Proyecto 3")
+        
+        for i in range(self.lista.count()):
+            item = self.lista.item(i)
+            item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
 
         self.lista.itemClicked.connect(self.cambiar_pagina)
         self.lista.setFixedWidth(150)
@@ -50,7 +54,7 @@ class VentanaPrincipal(QMainWindow):
             self.setCentralWidget(self.crear_proyecto_tres("Esta es la Página 3"))
             self.setWindowTitle('Visor de Imagenes')
         elif pagina == "Página Principal":
-            self.setCentralWidget(self.crear_pagina_inicial("Bienvenido a la Página Principal"))
+            self.setCentralWidget(self.crear_pagina_inicial("Bienvenido a la página principal"))
             self.setWindowTitle('Página Principal')
     
     def crear_pagina_inicial(self, texto):
@@ -59,9 +63,6 @@ class VentanaPrincipal(QMainWindow):
 
         label = QLabel(texto)
         label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        fuente = label.font()
-        fuente.setPointSize(12)
-        label.setFont(fuente)
 
         layout.addWidget(label)
         pagina.setLayout(layout)
@@ -73,7 +74,6 @@ class VentanaPrincipal(QMainWindow):
         self.barra.setShortcut(QKeySequence("Ctrl+l"))
         self.barra.setStatusTip("Muestra u oculta la barra lateral")
         self.barra.triggered.connect(self.barra_lateral)
-        
 
     def create_menu(self):
         self.menuBar()
@@ -96,10 +96,6 @@ class VentanaPrincipal(QMainWindow):
         self.resultado.setReadOnly(True)
         self.resultado.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.resultado.setFixedHeight(50)
-
-        fuente = self.resultado.font()
-        fuente.setPointSize(20)
-        self.resultado.setFont(fuente)
         
         layout.addWidget(self.resultado)
 
@@ -114,11 +110,6 @@ class VentanaPrincipal(QMainWindow):
         grid_layout = QGridLayout()
         for texto_boton, posicion in botones.items():
             boton = QPushButton(texto_boton)
-
-            fuente = boton.font()
-            fuente.setPointSize(16)
-            fuente.setBold(True)
-            boton.setFont(fuente)
 
             boton.setFixedSize(65, 65)
             boton.clicked.connect(self.manejar_click_boton)
@@ -157,17 +148,11 @@ class VentanaPrincipal(QMainWindow):
         botones_layout = QHBoxLayout()
 
         boton_guardar = QPushButton("Guardar")
-        fuente = boton_guardar.font()
-        fuente.setPointSize(10)
-        boton_guardar.setFont(fuente)
         boton_guardar.setFixedHeight(30)
         boton_guardar.clicked.connect(self.guardar_texto)
         botones_layout.addWidget(boton_guardar)
 
         boton_cargar = QPushButton("Cargar")
-        fuente = boton_cargar.font()
-        fuente.setPointSize(10)
-        boton_cargar.setFont(fuente)
         boton_cargar.setFixedHeight(30)
         boton_cargar.clicked.connect(self.cargar_texto)
         botones_layout.addWidget(boton_cargar)
@@ -178,7 +163,6 @@ class VentanaPrincipal(QMainWindow):
 
     def guardar_texto(self):
         # Abrir un cuadro de diálogo para guardar el archivo
-        #opciones = QFileDialog.Options()
         archivo, _ = QFileDialog.getSaveFileName(self, "Guardar Archivo", "", "Archivos de Texto (*.txt);;Todos los Archivos (*)")
         if archivo:
             with open(archivo, 'w', encoding='utf-8') as file:
@@ -186,7 +170,6 @@ class VentanaPrincipal(QMainWindow):
 
     def cargar_texto(self):
         # Abrir un cuadro de diálogo para cargar un archivo
-        #opciones = QFileDialog.Options()
         archivo, _ = QFileDialog.getOpenFileName(self, "Abrir Archivo", "", "Archivos de Texto (*.txt);;Todos los Archivos (*)")
         if archivo:
             with open(archivo, 'r', encoding='utf-8') as file:
@@ -200,16 +183,10 @@ class VentanaPrincipal(QMainWindow):
         # Etiqueta para mostrar la imagen
         self.imagen_label = QLabel("No se ha cargado ninguna imagen")
         self.imagen_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        fuente = self.imagen_label.font()
-        fuente.setPointSize(12)
-        self.imagen_label.setFont(fuente)
         layout.addWidget(self.imagen_label)
 
         # Botón para cargar la imagen
         boton_cargar_imagen = QPushButton("Cargar Imagen")
-        fuente = boton_cargar_imagen.font()
-        fuente.setPointSize(10)
-        boton_cargar_imagen.setFont(fuente)
         boton_cargar_imagen.setFixedHeight(30)
         boton_cargar_imagen.clicked.connect(self.cargar_imagen)
         layout.addWidget(boton_cargar_imagen)
@@ -227,8 +204,10 @@ class VentanaPrincipal(QMainWindow):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     app.setStyle("Fusion") #Alternativas Fusion, Windows, WindowsVista, MacOS
-    ventana = VentanaPrincipal()
-
+    
     apply_stylesheet(app, theme='light_cyan_500.xml', invert_secondary=True)
-
+    with open("./project/styles.qss", "r") as f:
+        app.setStyleSheet(app.styleSheet() + f.read())
+    
+    ventana = VentanaPrincipal()
     sys.exit(app.exec())

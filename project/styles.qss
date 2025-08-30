@@ -1,0 +1,7 @@
+QTextEdit, QLineEdit, QLabel {
+  font-size: 20px;
+}
+
+QPushButton {
+  font-size: 14px;
+}
