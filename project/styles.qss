@@ -2,6 +2,6 @@ QTextEdit, QLineEdit, QLabel {
   font-size: 20px;
 }
 
-QPushButton {
+QPushButton, QListView {
   font-size: 14px;
 }
