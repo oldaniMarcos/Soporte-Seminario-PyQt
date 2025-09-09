@@ -1,3 +1,5 @@
 # Soporte-Seminario-PyQt
 
-Aplicación simple para demostrar funcionalidad de PyQt, cuenta con una página principal, una calculadora, un bloc de notas y un visor de imagenes. Utiliza un tema personalizado.
+Archivos utilizados en la presentacion (documento, diapositivas, archivos para explicar conceptos, aplicación de muestra)
+
+El cuestionario se puede encontrar en el siguiente link: https://forms.gle/X3reNFzmEsvNULgHA
