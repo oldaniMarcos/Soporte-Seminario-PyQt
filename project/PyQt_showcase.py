@@ -1,11 +1,8 @@
-from PyQt6.QtWidgets import QApplication, QMainWindow, QStackedWidget, QPushButton, QVBoxLayout, QWidget, QLabel, QDockWidget,QListWidget
+from PyQt6.QtWidgets import QApplication, QMainWindow, QStackedWidget, QPushButton, QVBoxLayout, QWidget, QLabel, QDockWidget,QListWidget, QLineEdit, QGridLayout, QTextEdit, QFileDialog, QHBoxLayout
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QLineEdit, QGridLayout
-from PyQt6.QtWidgets import QTextEdit, QFileDialog, QHBoxLayout
-from PyQt6.QtGui import QPixmap
-from PyQt6.QtGui import QAction, QKeySequence
+from PyQt6.QtGui import QPixmap, QAction, QKeySequence
 
-from qt_material import apply_stylesheet 
+from qt_material import apply_stylesheet
 
 import sys
 
@@ -14,7 +11,8 @@ class VentanaPrincipal(QMainWindow):
         super().__init__()
         self.initialize_ui()
         self.create_sidebar()
-        
+
+    #Pagina principal
     def initialize_ui(self):
         self.setWindowTitle("Página Principal")
         self.setGeometry(100, 100, 800, 600)
@@ -22,6 +20,37 @@ class VentanaPrincipal(QMainWindow):
         self.create_action()
         self.create_menu()
         self.show()
+
+    def crear_pagina_inicial(self, texto):
+        pagina = QWidget()
+        layout = QVBoxLayout()
+
+        label = QLabel(texto)
+        label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        layout.addWidget(label)
+        pagina.setLayout(layout)
+        return pagina
+
+    #Menú de opcion(es)
+    def create_action(self):
+        self.barra = QAction("Barra", self, checkable=True)
+        self.barra.setChecked(True)
+        self.barra.setShortcut(QKeySequence("Ctrl+l"))
+        self.barra.setStatusTip("Muestra u oculta la barra lateral")
+        self.barra.triggered.connect(self.barra_lateral)
+
+    def create_menu(self):
+        self.menuBar()
+        menu_vista = self.menuBar().addMenu("Opciones")
+        menu_vista.addAction(self.barra)
+
+    #Sidebar / Dock
+    def barra_lateral(self):
+        if self.barra.isChecked():
+            self.dock_list.show()
+        else:
+            self.dock_list.hide()
 
     def create_sidebar(self):
         self.lista = QListWidget()
@@ -56,35 +85,6 @@ class VentanaPrincipal(QMainWindow):
         elif pagina == "Página Principal":
             self.setCentralWidget(self.crear_pagina_inicial("Bienvenido a la página principal"))
             self.setWindowTitle('Página Principal')
-    
-    def crear_pagina_inicial(self, texto):
-        pagina = QWidget()
-        layout = QVBoxLayout()
-
-        label = QLabel(texto)
-        label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
-        layout.addWidget(label)
-        pagina.setLayout(layout)
-        return pagina
-
-    def create_action(self):
-        self.barra = QAction("Barra", self, checkable=True)
-        self.barra.setChecked(True)
-        self.barra.setShortcut(QKeySequence("Ctrl+l"))
-        self.barra.setStatusTip("Muestra u oculta la barra lateral")
-        self.barra.triggered.connect(self.barra_lateral)
-
-    def create_menu(self):
-        self.menuBar()
-        menu_vista = self.menuBar().addMenu("Opciones")
-        menu_vista.addAction(self.barra)
-
-    def barra_lateral(self):
-        if self.barra.isChecked():
-            self.dock_list.show()
-        else:
-            self.dock_list.hide()
 
     #Proyecto uno: calculadora simple
     def crear_proyecto_uno(self, texto):
